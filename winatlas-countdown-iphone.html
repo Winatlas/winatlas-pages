@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WinAtlas — Countdown</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0D1B3E;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 60px 32px 80px;
+    position: relative;
+  }
+
+  /* Particules */
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #C9A84C;
+    border-radius: 50%;
+    animation: float linear infinite;
+    opacity: 0.4;
+  }
+  @keyframes float {
+    0% { transform: translateY(110vh); opacity: 0; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+  }
+
+  /* LOGO */
+  .logo {
+    font-size: clamp(11px, 3.5vw, 15px);
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: #C9A84C;
+    text-transform: uppercase;
+  }
+
+  /* HEADLINE */
+  .headline-block {
+    text-align: center;
+  }
+  .headline {
+    font-size: clamp(13px, 3.8vw, 17px);
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .subline {
+    font-size: clamp(20px, 6vw, 28px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .subline span { color: #C9A84C; }
+
+  /* COUNTDOWN */
+  .countdown {
+    display: flex;
+    gap: clamp(8px, 3vw, 20px);
+    align-items: center;
+  }
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .number-box {
+    background: rgba(201,168,76,0.1);
+    border: 1.5px solid rgba(201,168,76,0.45);
+    border-radius: 14px;
+    width: clamp(68px, 20vw, 82px);
+    height: clamp(68px, 20vw, 82px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .number {
+    font-size: clamp(30px, 9vw, 40px);
+    font-weight: 700;
+    color: #C9A84C;
+    font-variant-numeric: tabular-nums;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+  .label {
+    font-size: clamp(9px, 2.5vw, 11px);
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .separator {
+    font-size: clamp(24px, 7vw, 36px);
+    color: rgba(201,168,76,0.4);
+    margin-bottom: 18px;
+    animation: blink 1s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+  }
+
+  /* PRIZE BOX */
+  .prize-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 18px;
+    padding: 18px 20px;
+    width: 100%;
+  }
+  .prize-title {
+    font-size: clamp(10px, 2.8vw, 12px);
+    color: #C9A84C;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .prize-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: clamp(12px, 3.5vw, 14px);
+    color: rgba(255,255,255,0.82);
+    line-height: 1.3;
+  }
+  .prize-item:last-child { margin-bottom: 0; }
+  .prize-icon { font-size: clamp(14px, 4vw, 18px); flex-shrink: 0; }
+
+  /* TICKET BADGE */
+  .ticket-badge {
+    background: linear-gradient(135deg, #C9A84C, #e0c96a);
+    border-radius: 100px;
+    padding: 13px 36px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ticket-badge .t1 {
+    font-size: clamp(12px, 3.5vw, 14px);
+    color: #0D1B3E;
+    font-weight: 600;
+  }
+  .ticket-badge .t2 {
+    font-size: clamp(22px, 7vw, 28px);
+    font-weight: 700;
+    color: #0D1B3E;
+  }
+
+  /* CTA */
+  .cta-block { text-align: center; }
+  .cta {
+    font-size: clamp(12px, 3.5vw, 15px);
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 4px;
+  }
+  .cta-link {
+    font-size: clamp(14px, 4.5vw, 18px);
+    font-weight: 700;
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="particle" style="left:8%;animation-duration:9s;animation-delay:0s;width:3px;height:3px;"></div>
+  <div class="particle" style="left:22%;animation-duration:13s;animation-delay:2s;"></div>
+  <div class="particle" style="left:50%;animation-duration:10s;animation-delay:4s;width:3px;height:3px;"></div>
+  <div class="particle" style="left:70%;animation-duration:8s;animation-delay:1s;"></div>
+  <div class="particle" style="left:88%;animation-duration:11s;animation-delay:3s;width:3px;height:3px;"></div>
+
+  <div class="logo">WINATLAS</div>
+
+  <div class="headline-block">
+    <div class="headline">The draw is in</div>
+    <div class="subline">Someone is going to<br><span>New York 🗽</span></div>
+  </div>
+
+  <div class="countdown">
+    <div class="unit">
+      <div class="number-box"><span class="number" id="days">00</span></div>
+      <span class="label">Days</span>
+    </div>
+    <span class="separator">:</span>
+    <div class="unit">
+      <div class="number-box"><span class="number" id="hours">00</span></div>
+      <span class="label">Hours</span>
+    </div>
+    <span class="separator">:</span>
+    <div class="unit">
+      <div class="number-box"><span class="number" id="minutes">00</span></div>
+      <span class="label">Min</span>
+    </div>
+    <span class="separator">:</span>
+    <div class="unit">
+      <div class="number-box"><span class="number" id="seconds">00</span></div>
+      <span class="label">Sec</span>
+    </div>
+  </div>
+
+  <div class="prize-box">
+    <div class="prize-title">What's at stake</div>
+    <div class="prize-item"><span class="prize-icon">✈️</span>Business Class return flight — La Compagnie</div>
+    <div class="prize-item"><span class="prize-icon">🏨</span>6 nights at The Hendricks Hotel, Manhattan</div>
+    <div class="prize-item"><span class="prize-icon">⚽</span>2 FIFA World Cup 2026 match tickets</div>
+    <div class="prize-item"><span class="prize-icon">👫</span>For 2 people — bring whoever you want</div>
+  </div>
+
+  <div class="ticket-badge">
+    <span class="t1">Your ticket</span>
+    <span class="t2">£25</span>
+  </div>
+
+  <div class="cta-block">
+    <div class="cta">Get yours now</div>
+    <div class="cta-link">winatlas.co</div>
+  </div>
+
+</div>
+
+<script>
+  const target = new Date('2026-06-01T00:00:00').getTime();
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function update() {
+    const diff = target - Date.now();
+    if (diff <= 0) {
+      ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '00');
+      return;
+    }
+    document.getElementById('days').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  update();
+  setInterval(update, 1000);
+</script>
+</body>
+</html>
