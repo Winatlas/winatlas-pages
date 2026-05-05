@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinAtlas — Countdown</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0D1B3E;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 390px;
+    min-height: 844px;
+    background: #0D1B3E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    position: relative;
+  }
+
+  /* Particules de fond */
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #C9A84C;
+    border-radius: 50%;
+    animation: float linear infinite;
+    opacity: 0.4;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(900px) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+  }
+
+  .logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #C9A84C;
+    margin-bottom: 32px;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .subline {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.3;
+  }
+
+  .subline span {
+    color: #C9A84C;
+  }
+
+  /* Compte à rebours */
+  .countdown {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .number-box {
+    background: rgba(201,168,76,0.1);
+    border: 1.5px solid rgba(201,168,76,0.4);
+    border-radius: 12px;
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .number-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .number {
+    font-size: 36px;
+    font-weight: 700;
+    color: #C9A84C;
+    font-variant-numeric: tabular-nums;
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+  }
+
+  .label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .separator {
+    font-size: 32px;
+    color: rgba(201,168,76,0.4);
+    margin-top: 16px;
+    animation: blink 1s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* Lot */
+  .prize-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    margin-bottom: 28px;
+  }
+
+  .prize-title {
+    font-size: 11px;
+    color: #C9A84C;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .prize-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .prize-item:last-child { margin-bottom: 0; }
+
+  .prize-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* Prix ticket */
+  .ticket-badge {
+    background: linear-gradient(135deg, #C9A84C, #e0c96a);
+    border-radius: 100px;
+    padding: 12px 32px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ticket-badge span:first-child {
+    font-size: 13px;
+    color: #0D1B3E;
+    font-weight: 600;
+  }
+
+  .ticket-badge span:last-child {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0D1B3E;
+  }
+
+  /* CTA */
+  .cta {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .cta-link {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* Barre du bas */
+  .bottom-bar {
+    position: absolute;
+    bottom: 32px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.3);
+  }
+  .dot.active { background: #C9A84C; width: 16px; border-radius: 3px; }
+
+  /* Pulse ring autour du compte à rebours */
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    animation: ring-pulse 3s ease-out infinite;
+  }
+
+  @keyframes ring-pulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Particules -->
+  <div class="particle" style="left:10%;animation-duration:8s;animation-delay:0s;width:3px;height:3px;"></div>
+  <div class="particle" style="left:25%;animation-duration:12s;animation-delay:2s;"></div>
+  <div class="particle" style="left:40%;animation-duration:9s;animation-delay:4s;width:4px;height:4px;"></div>
+  <div class="particle" style="left:60%;animation-duration:11s;animation-delay:1s;"></div>
+  <div class="particle" style="left:75%;animation-duration:7s;animation-delay:3s;width:3px;height:3px;"></div>
+  <div class="particle" style="left:88%;animation-duration:10s;animation-delay:5s;"></div>
+
+  <div class="logo">WINATLAS</div>
+
+  <div class="headline">The draw is in</div>
+  <div class="subline">Someone is going to<br><span>New York 🗽</span></div>
+
+  <div class="countdown">
+    <div class="unit">
+      <div class="number-box"><span class="number" id="days">00</span></div>
+      <span class="label">Days</span>
+    </div>
+    <span class="separator">:</span>
+    <div class="unit">
+      <div class="number-box"><span class="number" id="hours">00</span></div>
+      <span class="label">Hours</span>
+    </div>
+    <span class="separator">:</span>
+    <div class="unit">
+      <div class="number-box"><span class="number" id="minutes">00</span></div>
+      <span class="label">Min</span>
+    </div>
+    <span class="separator">:</span>
+    <div class="unit">
+      <div class="number-box"><span class="number" id="seconds">00</span></div>
+      <span class="label">Sec</span>
+    </div>
+  </div>
+
+  <div class="prize-box">
+    <div class="prize-title">What's at stake</div>
+    <div class="prize-item"><span class="prize-icon">✈️</span>Business Class return flight — La Compagnie</div>
+    <div class="prize-item"><span class="prize-icon">🏨</span>6 nights at The Hendricks Hotel, Manhattan</div>
+    <div class="prize-item"><span class="prize-icon">⚽</span>2 FIFA World Cup 2026 match tickets</div>
+    <div class="prize-item"><span class="prize-icon">👫</span>For 2 people — bring whoever you want</div>
+  </div>
+
+  <div class="ticket-badge">
+    <span>Your ticket</span>
+    <span>£25</span>
+  </div>
+
+  <div class="cta">Get yours now</div>
+  <div class="cta-link">winatlas.co</div>
+
+  <div class="bottom-bar">
+    <div class="dot"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+  </div>
+
+</div>
+
+<script>
+  // Date cible : 1er juin 2026 à 00:00
+  const target = new Date('2026-06-01T00:00:00').getTime();
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function update() {
+    const now = Date.now();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      document.getElementById('days').textContent = '00';
+      document.getElementById('hours').textContent = '00';
+      document.getElementById('minutes').textContent = '00';
+      document.getElementById('seconds').textContent = '00';
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById('days').textContent = pad(days);
+    document.getElementById('hours').textContent = pad(hours);
+    document.getElementById('minutes').textContent = pad(minutes);
+    document.getElementById('seconds').textContent = pad(seconds);
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
+</body>
+</html>
